@@ -35,6 +35,29 @@ Verify:
 curl -f http://localhost:8000/healthz
 ```
 
+## Local development with Cloudflare Tunnel
+
+When developing locally without exposing a public port, use the `start.sh` script to automatically create a Cloudflare Tunnel:
+
+```bash
+cd backend
+./start.sh --tunnel
+```
+
+This will:
+1. Start `cloudflared` to create a temporary tunnel to `http://localhost:8000`
+2. Extract the tunnel URL (e.g., `https://abc123.trycloudflare.com`)
+3. Set `BASE_URL` to the tunnel URL automatically
+4. Start uvicorn
+
+**Prerequisites:**
+- Install `cloudflared`: `brew install cloudflared` (macOS) or `apt install cloudflared` (Linux)
+
+**Notes:**
+- The tunnel URL changes every time you restart
+- When using tunnel mode, `BASE_URL` is automatically set — no need to configure it manually
+- Exit with Ctrl+C to shut down both the tunnel and uvicorn
+
 ## Configuration / environment variables
 
 Backend settings are defined in `app/core/config.py` via `pydantic-settings`.
